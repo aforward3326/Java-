@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmls:th="http://www.thymeleaf.org/">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+		<div class="position-sticky padding-top pt-3"
+			th:fragment="navbar_side">
+			<ul class="nav flex-column">
+			
+				<li class="nav-item"><a class="nav-link active"
+					aria-current="page" th:href="@{/dashboard}"> <span data-feather="home"></span>
+						<p style="display: none"><b>[[${#request.userPrincipal.principal.memberId}]]</b></p>管理介面
+				</a></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+					role="button" aria-haspopup="true" aria-expanded="false">帳號管理</a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" th:href="@{/updatemember/{id}(id=${#request.userPrincipal.principal.memberId})}">基本資料</a> <a
+							class="dropdown-item" th:href="@{/updatememberpassword/{id}(id=${#request.userPrincipal.principal.memberId})}">變更密碼</a> 
+					</div></li>
+				<li class="nav-item"><a class="nav-link" href="#"> <span
+						data-feather="file"></span> 訂單管理
+				</a></li>
+				<li class="nav-item"><a class="nav-link" href="#"> <span
+						data-feather="shopping-cart"></span> 商品管理
+				</a></li>
+				<li class="nav-item"><a class="nav-link" href="#"> <span
+						data-feather="users"></span> 收單管理
+				</a></li>
+				<li class="nav-item"><a class="nav-link" href="#"> <span
+						data-feather="bar-chart-2"></span> 公告欄管理
+				</a></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

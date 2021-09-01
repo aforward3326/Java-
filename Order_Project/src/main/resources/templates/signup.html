@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmls:th="http://www.thymeleaf.org/">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+</head>
+<body>
+	<!-- Navbar -->
+	<header th:replace="main/header::header"> </header>
+	<main>
+		<canvas class="my-4 w-100" id="myChart" width="900" height="20"></canvas>
+		<div class="container-fluid min-vh-100">
+			<div class="row">
+				<div class="col-lg-2 col-md-2 col-sm-1"></div>
+				<div class="col-lg-4 col-md-8 col-sm-10">
+					<h1>註冊會員</h1>
+					<form th:action="@{/saveMember}" th:object="${member}"
+						method="post">
+						<div class="form-group">
+							<label for="exampleFormControlInput1">電子信箱</label> <input
+								type="email" th:field="*{userEmail}" placeholder="例如:abc123@gmail.com"
+								class="form-control mb-4 col-8"><br> <label
+								for="exampleFormControlInput1">密碼</label> <input type="password"
+								th:field="*{password}" class="form-control mb-4 col-8">
+							<label for="exampleFormControlInput1">確認密碼</label> <input
+								type="password" class="form-control mb-4 col-8"><br>
+							<label for="exampleFormControlInput1">姓名</label> <input
+								type="text" th:field="*{name}" class="form-control mb-4 col-8"><br>
+							<div class="form-group">
+								<label for="exampleFormControlSelect1">性別</label> <select
+									th:field="*{sex}" class="form-control mb-4 col-8"><br>
+									<option th:each="sex:${sexes}" th:value="${sex.key}"
+										th:text="${sex.key}"></option>
+								</select>
+							</div>
+							<label for="exampleFormControlInput1">單位</label> <input
+								type="text" th:field="*{unit}" class="form-control mb-4 col-8">
+							<br> <label for="exampleFormControlInput1">手機</label> <input
+								type="tel" pattern="[0-9]{4}(\-[0-9]{6})"
+								th:field="*{cellphone}" placeholder="例如:0912-345678"
+								title="例如:0912-345678" class="form-control mb-4 col-8"><br>
+							<label for="exampleFormControlInput1">分機</label> <input
+								type="text" th:field="*{officephone}" placeholder="例如:#123"
+								class="form-control mb-4 col-8"><br> <br> <label
+								for="exampleFormControlInput1">地址</label> <input type="text"
+								th:field="*{address}" class="form-control mb-4 col-8"><br>
+						</div>
+						<button type="submit" class="btn btn-info col-2">註冊</button>
+						<br>
+					</form>
+				</div>
+				<div class="col-lg-6 col-md-2 col-sm-1 "></div>
+			</div>
+		</div>
+
+	</main>
+	<hr>
+	<footer>
+		<div class="container-fluid">
+			<div class="row justify-content-center">
+				<div th:replace="main/footer::footer"></div>
+			</div>
+		</div>
+	</footer>
+</body>
+</html>
