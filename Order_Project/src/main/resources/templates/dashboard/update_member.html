@@ -29,10 +29,10 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css"
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
-<link href="css/styles.css" rel="stylesheet" />
+<link href="css/styles.css" rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-	<header  th:insert="dashboard/header::header"></header>
+	<header  th:replace="dashboard/header::dash_header"></header>
 	<canvas class="my-4 w-100" id="myChart" width="900" height="10"></canvas>
 	<main>
 		<div class="container-fluid">
@@ -42,7 +42,7 @@
 					th:insert="dashboard/sidebar::navbar_side"></nav>
 
 				<div class="col-md-10 col-lg-10">
-					<canvas class="my-4 w-100" id="myChart" width="900" height="0"></canvas>
+					<canvas class="my-4 w-100" id="myChart" width="900" height="30"></canvas>
 					<h1>變更會員資料</h1>
 					<form action="#" th:action="@{/updateMember}" th:object="${member}"
 						method="post">

@@ -30,40 +30,43 @@
 	<nav th:insert="main/header::header" ></nav>
 	<header class="masthead">
 		<!-- MainPage -->
+		
 		<div th:replace="main/main::main"></div>
 	</header>
 	<main>
 		<!-- News -->
 		<section class="page-section " id="about">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
-					<div class="col-2"></div>
-					<div class="col-8">
+					
+					<div class="col-12">
 						<div th:insert="main/new_news::new_news"></div>
 					</div>
-					<div class="col-2"></div>
+					
 				</div>
 			</div>
 		</section>
 		<!-- Service -->
 		<section class="page-section" id="services">
-			<div class="container-fluid">
+			<div class="container" >
 				<div class="row">
-					<div class="col-2"></div>
-					<div class="col-8">
+					
+					<div class="col-12" >
 						<div th:insert="main/list::list"></div>
 					</div>
-					<div class="col-2"></div>
+					
 				</div>
 			</div>
 		</section>
 	</main>
-	<footer>
-		<div class="container-fluid">
+	<footer id="footer">
+	<section id="footer">
+		<div class="container-fluid" >
 			<div class="row justify-content-center">
 				<div th:replace="main/footer::footer"></div>
 			</div>
 		</div>
+		</section>
 	</footer>
 
 

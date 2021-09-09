@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import tw.com.order.demo.entities.Order;
+import tw.com.order.demo.service.NewsService;
 import tw.com.order.demo.service.OrderService;
 
 @Controller
@@ -13,6 +14,9 @@ public class HeaderController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private NewsService newsService;
 	
 	@GetMapping("/header")
 	public String getHeader(Model model) {
@@ -47,7 +51,7 @@ public class HeaderController {
 	
 	@GetMapping({"/news"})
 	public String getNews(Model model) {
-		
+		model.addAttribute("news", newsService.getAllNews());
 		return "news";
 	}
 

@@ -29,13 +29,14 @@ public class Order {
 	private String orderId;
 	@Column(name = "memberId")
 	private String memberId;
+	@Column(name = "memberName")
+	private String name;
 	@Column(name = "orderItem")
-	private String orderItem;
-	
+	private String orderItem;	
 	@Column(name = "orderAmount")
 	private int orderAmount;
 	@Column(name = "orderTotal")
-	private int ordertotal;
+	private int orderTotal;
 	@Column(name = "orderNote")
 	private String orderNote;
 	@Column(name = "orderDate")
@@ -85,12 +86,12 @@ public class Order {
 		this.orderAmount = orderAmount;
 	}
 
-	public int getOrdertotal() {
-		return ordertotal;
+	public int getOrderTotal() {
+		return orderTotal;
 	}
 
-	public void setOrdertotal(int ordertotal) {
-		this.ordertotal = ordertotal;
+	public void setOrderTotal(int orderTotal) {
+		this.orderTotal = orderTotal;
 	}
 
 	public String getOrderNote() {
@@ -136,7 +137,7 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order [orderId=" + orderId + ", memberId=" + memberId + ", orderItem=" + orderItem
-				+ ", orderAmount=" + orderAmount + ", ordertotal=" + ordertotal + ", orderNote=" + orderNote
+				+ ", orderAmount=" + orderAmount + ", orderTotal=" + orderTotal + ", orderNote=" + orderNote
 				+ ", orderDate=" + orderDate + ", orderTime=" + orderTime + ", createAt=" + createAt + ", updateAt="
 				+ updateAt + "]";
 	}

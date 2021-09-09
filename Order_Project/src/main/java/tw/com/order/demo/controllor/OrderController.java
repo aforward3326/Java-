@@ -1,20 +1,33 @@
 package tw.com.order.demo.controllor;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import tw.com.order.demo.entities.CustomUserDetails;
+import tw.com.order.demo.entities.Member;
 import tw.com.order.demo.entities.Order;
+import tw.com.order.demo.entities.OrderItems;
+import tw.com.order.demo.service.MemberService;
+import tw.com.order.demo.service.OrderItemsService;
 import tw.com.order.demo.service.OrderService;
+
 
 
 
@@ -23,25 +36,30 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private OrderItemsService orderItemsService;
 
-	@GetMapping(value = { "/order_orders" })
-	public String mainOrder(Model model) {
+	@GetMapping(value = { "/dashboard/order_orders/{id}" })
+	public String mainOrder(@AuthenticationPrincipal CustomUserDetails loggedUser,@PathVariable(value="id") String id, Model model) {
+		id = loggedUser.getMemberId();
+		Member member= memberService.getMemberById(id);
+		model.addAttribute("member",member);
 		Order order = new Order();
 		model.addAttribute("order", order);
-		Map<String, Object> item = new HashMap<String, Object>();
-		item.put("肉鬆", 2);
-		item.put("稀飯", 1);
-		item.put("皮蛋", 0);
-		model.addAttribute("item", item);
+		List<OrderItems> orderItems=orderItemsService.getAllOrderItems();
+		model.addAttribute("orderItems", orderItems);
 
-		return "order";
+		return "dashboard/order";
 	}
 
 	@GetMapping(value = { "/all_orderlist" })
-	public String viewHomePage(Model model) {
-		model.addAttribute("listOrder", orderService.getAllOrder());
-		model.addAttribute("title", "訂單列表");
-		return "dashboard/order_list";
+	public String allOrderList(Model model) {
+		model.addAttribute("orderSearch", orderService.getAllOrder());
+		return "admin/allorder_search";
 	}
 
 	@GetMapping(value = { "/new_orderlist" })
@@ -56,7 +74,7 @@ public class OrderController {
 	@PostMapping("/saveOrder")
 	public String saveOrder(@ModelAttribute("order") Order order, Model model) {
 		orderService.saveOrder(order);
-		return "redirect:/";
+		return "redirect:/dashboard";
 	}
 
 	// 更新訂單
@@ -68,17 +86,41 @@ public class OrderController {
 	}
 
 	// 刪除訂單
-	@GetMapping("/deleteOrder/{id}")
-	public String deleteOrder(@PathVariable(value = "id") String orderId) {
+	@GetMapping("/deleteOrder/{orderid}")
+	public String deleteOrder(@PathVariable(value = "orderid") String orderId) {
 		this.orderService.deleteOrder(orderId);
-		return "redirect:/";
+		return "redirect:/dashboard/order_search";
 	}
 
-	//查詢訂單
-	@GetMapping("/order_search/{id}")
-	public String getOrder(@PathVariable String orderid, Model model) {
-//		Order order=orderService.getOrderById(orderid);
-		model.addAttribute("orderSearch", orderService.getOrderById(orderid));
-		return "order_search_result";
+	//查詢單一會員訂單
+	@GetMapping("/dashboard/order_search/{id}")
+	public String getOrder(@AuthenticationPrincipal CustomUserDetails loggedUser,@PathVariable(value="id") String id, Model model) {
+		id = loggedUser.getMemberId();
+		Member member= memberService.getMemberById(id);
+		model.addAttribute("orderSearch", orderService.getMemberOrder(id));
+		Order order = new Order();
+		model.addAttribute("order", order);
+		
+		return "dashboard/order_search";
 	}
+	
+	
+	
+//	@GetMapping(value= {"/page/{pageNumber}"})
+//	public String listByPage(Model model, @PathVariable("pageNumber") int currentPage) {
+//		
+//		
+//		Page<Order> pageOrder=orderService.listAll(currentPage);
+//		int totalItems=pageProduct.getNumberOfElements();
+//		int totalPages=pageProduct.getTotalPages();
+//		List<Product> listProduct=pageProduct.getContent();
+//		
+//		model.addAttribute("currentPage",currentPage);
+//		model.addAttribute("totalItems", totalItems);
+//		model.addAttribute("totalPages", totalPages);
+//		model.addAttribute("listProduct",listProduct);
+//		
+//		return "index";
+//		
+//	}
 }

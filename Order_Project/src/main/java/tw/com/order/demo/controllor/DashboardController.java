@@ -8,6 +8,7 @@ import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,7 +34,7 @@ public class DashboardController {
 	private MemberService memberService;
 	
 	@GetMapping({"/dashboard"})
-	public String getDashBoard(Model model) {
+	public String getDashBoard(@AuthenticationPrincipal CustomUserDetails loggedUser,Model model) {
 	Member member=new Member();
 	model.addAttribute("member",member);
 		return "dashboard/dashboard";
@@ -79,7 +80,7 @@ public class DashboardController {
 	public String saveUpdateMemberPassword( Member member, RedirectAttributes redirectAttributes,@AuthenticationPrincipal CustomUserDetails loggedUser)throws IOException {
 		memberService.updateMemberPassword(member);
 		redirectAttributes.addFlashAttribute("message", "更新成功");
-		return "redirect:/dashboard";
+		return "redirect:/login";
 		
 	}
 

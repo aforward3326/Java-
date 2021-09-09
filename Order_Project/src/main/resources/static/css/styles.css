@@ -11314,6 +11314,16 @@ hr.divider-light {
   background-color: #fff;
 }
 
+#services {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  background-color: #464866;
+  transition: background-color 0.2s ease;}
+  
+#footer {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  background-color: #FFF;
+  transition: background-color 0.2s ease;}
+
 #mainNav {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   background-color: #25274D;

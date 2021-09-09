@@ -35,8 +35,7 @@ public class MemberController {
 	@GetMapping(value= {"/all_memberlist"})
 	public String allMemberList(Model model) {
 		model.addAttribute("listMember", memberService.getAllMember());
-		model.addAttribute("title", "會員列表");
-		return "dashboard/member_list";
+		return "admin/allmember";
 	}
 	
 	@GetMapping(value={"/new_memberlist"})
@@ -50,7 +49,7 @@ public class MemberController {
 	@PostMapping("/saveMember")
 	public String saveMember(@ModelAttribute("member") Member member) {
 		memberService.saveMember(member);
-		return "redirect:/";
+		return "redirect:/login";
 	}
 	
 	@GetMapping("/updateMember/{id}")
@@ -63,7 +62,7 @@ public class MemberController {
 	@GetMapping("/deleteMember/{id}")
 	public String deleteMember(@PathVariable(value="id") Long id) {
 		this.memberService.deleteMember(id);
-		return "redirect:/";
+		return "redirect:/all_memberlist";
 	}
 
 }

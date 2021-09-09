@@ -8,9 +8,14 @@ import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import tw.com.order.demo.entities.Order;
+import tw.com.order.demo.entities.OrderItems;
+import tw.com.order.demo.repository.OrderItemsRepository;
 import tw.com.order.demo.repository.OrderRepository;
 import tw.com.order.demo.service.OrderService;
 
@@ -19,6 +24,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderRepository orderRepository;
+	
+	@Autowired
+	private OrderItemsRepository orderItemsRepository;
 
 	@Override
 	public List<Order> getAllOrder() {
@@ -64,5 +72,19 @@ public class OrderServiceImpl implements OrderService {
 		// 17位时间+9位随机数
 		return timeStr + r;
 	}
+
+	@Override
+	public List<Order> getMemberOrder(String memberId) {
+		// TODO Auto-generated method stub
+		return orderRepository.findAllByMemberId(memberId);
+	}
+
+	@Override
+	public Page<Order> listAll(int pageNumber) {
+		Pageable pageable=PageRequest.of(pageNumber-1, 20);
+		return orderRepository.findAll(pageable);
+	}
+	
+	
 
 }
