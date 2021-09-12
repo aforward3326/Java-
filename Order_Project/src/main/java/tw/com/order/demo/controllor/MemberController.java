@@ -48,7 +48,7 @@ public class MemberController {
 	
 	@PostMapping("/saveMember")
 	public String saveMember(@ModelAttribute("member") Member member) {
-		memberService.saveMember(member);
+		memberService.saveMemberWithDefaultRole(member);
 		return "redirect:/login";
 	}
 	

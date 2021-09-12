@@ -21,15 +21,17 @@ public class CustomUserDetails implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		
 //		//Role
-//		Set<Role>  roles=member.getRoles();
-//		List<SimpleGrantedAuthority> authority=new ArrayList<>();
-//		
-//		for(Role role:roles) {
-//			authority.add(new SimpleGrantedAuthority(role.getName()));
-//		}
+		Set<Role>  roles=member.getRoles();
+		List<SimpleGrantedAuthority> authority=new ArrayList<>();
 		
-		return null;
+		for(Role role:roles) {
+			authority.add(new SimpleGrantedAuthority(role.getRoleName()));
+		}
+		
+		return authority;
 	}
+	
+	
 
 	@Override
 	public String getPassword() {

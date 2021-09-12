@@ -2,6 +2,7 @@ package tw.com.order.demo.controllor;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.websocket.server.PathParam;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tw.com.order.demo.entities.CustomUserDetails;
 import tw.com.order.demo.entities.Member;
+import tw.com.order.demo.entities.Role;
 import tw.com.order.demo.service.MemberService;
 import tw.com.order.demo.service.OrderService;
 
@@ -78,10 +80,54 @@ public class DashboardController {
 	
 	@PostMapping("/updateMemberPassword")
 	public String saveUpdateMemberPassword( Member member, RedirectAttributes redirectAttributes,@AuthenticationPrincipal CustomUserDetails loggedUser)throws IOException {
+		
+		
+		
 		memberService.updateMemberPassword(member);
 		redirectAttributes.addFlashAttribute("message", "更新成功");
+		
 		return "redirect:/login";
+				
+	}
+	
+	@GetMapping({"/updatememberrolesbyadmin/{id}"})
+	public String updateMemberRolesByAdmin(@PathVariable(value="id") String id ,Model model) {
+		Member member= memberService.getMemberById(id);
+		model.addAttribute("member",member);
+		System.out.println(id);
+		return "admin/update_member_password";
 		
 	}
+	
+	@PostMapping("/updateMemberPasswordbyadmin")
+	public String saveUpdateMemberPasswordByAdmin( Member member)throws IOException {
+		
+		if(member.getPassword()==null) {
+		return "admin/allmember";
+		}
+		memberService.updateMemberPassword(member);
+		return "redirect:/login";
+				
+	}
+	
+	@GetMapping({"/updatememberroles/{id}"})
+	public String updateMemberRoles(@AuthenticationPrincipal CustomUserDetails loggedUser,@PathVariable(value="id") String id ,Model model) {
+		id = loggedUser.getMemberId();
+		Member member= memberService.getMemberById(id);
+		List<Role> listRoles=memberService.getRoles();
+		model.addAttribute("member",member);
+		model.addAttribute("listRoles",listRoles);
+		System.out.println(id);
+		return "admin/update_member_roles";
+	}
+	
+	@PostMapping("/updateMemberRoles")
+	public String saveUpdateMemberRoles( Member member, RedirectAttributes redirectAttributes,@AuthenticationPrincipal CustomUserDetails loggedUser)throws IOException {
+		memberService.updateMemberRoles(member);
+		redirectAttributes.addFlashAttribute("message", "更新成功");
+		return "redirect:/all_memberlist";
+	}
+	
+
 
 }

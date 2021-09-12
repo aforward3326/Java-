@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 import tw.com.order.demo.entities.CustomUserDetails;
 import tw.com.order.demo.entities.Member;
-
+import tw.com.order.demo.entities.Role;
 import tw.com.order.demo.repository.MemberRepository;
-
+import tw.com.order.demo.repository.RoleRepository;
 import tw.com.order.demo.service.MemberService;
 
 @Service
@@ -24,6 +24,9 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 	private MemberRepository memberRepository;
 	
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 
 
 	@Override
@@ -79,12 +82,52 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 
 	@Override
 	public String updateMemberPassword(Member member) {
+		
+		if(member.getPassword() == null) {
+			return null;
+		}else {
 		BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder(10);
 		member.setPassword(passwordEncoder.encode(member.getPassword())); 
 		
 		memberRepository.updateMemberPassword(member.getMemberId(), member.getPassword());
 		return member.getMemberId();
+		}
 	}
+
+
+
+	@Override
+	public void saveMemberWithDefaultRole(Member member) {
+		BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder(10);
+		member.setPassword(passwordEncoder.encode(member.getPassword())); 
+		Role rolemember= roleRepository.findByName("Member");
+		member.addRole(rolemember);
+		memberRepository.save(member);
+		//儲存使用者
+		memberRepository.saveAndFlush(member);
+		
+	}
+	
+
+	@Override
+	public List<Role> getRoles() {
+		
+		return roleRepository.findAll();
+	}
+
+	@Override
+	public String updateMemberRoles(Member member) {
+		Role rolemember= roleRepository.findById(member.getRoles());
+		member.addRole(rolemember);
+		memberRepository.save(member);
+		
+		memberRepository.updateMemberRoles(member.getMemberId(),member.getRoles());
+		
+		return member.getMemberId();
+		
+	}
+
+	
 
 	
 

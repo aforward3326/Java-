@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import tw.com.order.demo.entities.seq.MemberSequenceGenerator;
 
-
 @Entity
 public class Member {
 	@Id
@@ -31,39 +31,37 @@ public class Member {
 			@Parameter(name = MemberSequenceGenerator.PARAM_DATETIME_FORMAT, value = MemberSequenceGenerator.DATETIME_FORMAT_YYYYMMDD),
 			@Parameter(name = MemberSequenceGenerator.PARAM_SEQ_LENGTH, value = "5"),
 			@Parameter(name = MemberSequenceGenerator.PARAM_PADDING_CHAR, value = "0") })
-	@Column(name="memberId")
+	@Column(name = "memberId")
 	private String memberId;
-	@Column(name="name")
+	@Column(name = "name")
 	private String name;
-	@Column(name="sex")
+	@Column(name = "sex")
 	private String sex;
-	@Column(name="userPassword",length = 256, nullable = false)
+	@Column(name = "userPassword", length = 256, nullable = false)
 	private String password;
-	@Column(name="unit")
+	@Column(name = "unit")
 	private String unit;
-	@Column(name="address")
+	@Column(name = "address")
 	private String address;
-	@Column(name="userEmail",length = 256, nullable = false)
+	@Column(name = "userEmail", length = 256, nullable = false)
 	private String userEmail;
-	@Column(name="cellphone")
+	@Column(name = "cellphone")
 	private String cellphone;
-	@Column(name="officephone")
+	@Column(name = "officephone")
 	private String officephone;
 	@CreationTimestamp
-	@Column(name="createAt",nullable=false,updatable=false)
+	@Column(name = "createAt", nullable = false, updatable = false)
 	private Date createAt;
 	@UpdateTimestamp
-	@Column(name="updateAt")
+	@Column(name = "updateAt")
 	private Date updateAt;
-	
-	@ManyToMany
-	@JoinTable(name="member_role",joinColumns = @JoinColumn(name="member_id"))
-	private Set<Role> roles=new HashSet<Role>();
-	
-	
-	
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "member_role", joinColumns = @JoinColumn(name = "memberId"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+
 	public Member() {
-		
+
 	}
 
 	public String getPassword() {
@@ -81,8 +79,6 @@ public class Member {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
-
-	
 
 	public String getMemberId() {
 		return memberId;
@@ -115,7 +111,6 @@ public class Member {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
 
 	public String getCellphone() {
 		return cellphone;
@@ -157,8 +152,6 @@ public class Member {
 		this.sex = sex;
 	}
 
-	
-	
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -167,20 +160,8 @@ public class Member {
 		this.roles = roles;
 	}
 
-
-
-	@Override
-	public String toString() {
-		return "Member [memberId=" + memberId + ", name=" + name + ", sex=" + sex + ", password=" + password
-				+ ", unit=" + unit + ", address=" + address + ", userEmail=" + userEmail + ", cellphone=" + cellphone
-				+ ", officephone=" + officephone + ", createAt=" + createAt + ", updateAt=" + updateAt + ", roles="
-				+ roles + "]";
+	public void addRole(Role role) {
+		this.roles.add(role);
 	}
-
-	
-
-	
-	
-	
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import tw.com.order.demo.entities.Member;
+import tw.com.order.demo.entities.Role;
 
 @Service
 public interface MemberService {
@@ -20,6 +21,14 @@ public interface MemberService {
 	String updateMember(Member member);
 	
 	String updateMemberPassword(Member member);
+	
+	void saveMemberWithDefaultRole(Member member);
+	
+	List<Role> getRoles();
+	
+	String updateMemberRoles(Member member);
+	
+
 	
 	
 	
